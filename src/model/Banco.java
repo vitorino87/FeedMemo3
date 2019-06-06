@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Banco extends SQLiteOpenHelper
 {
 	//Controle da versão
-	private static final int VERSAO_BANCO = 1;
+	private static final int VERSAO_BANCO = 2;
 	//Cria a tabela com _id sequencial
-	private static final String SCRIPT_TABLE_CREATE= "create table ideias(id integer primary key autoincrement, ideia text, morto text, tag integer);";
+	private static final String SCRIPT_TABLE_CREATE= "create table ideias(id integer primary key autoincrement, ideia text, tag integer);";
 	
 	public Banco(Context context, String nomeBanco) {//criando o banco
 		super(context, nomeBanco, null, VERSAO_BANCO);
@@ -96,17 +96,15 @@ public class Banco extends SQLiteOpenHelper
 				c = db.query(tabela, null, "tag=? AND id BETWEEN ? AND ? LIMIT 5", args, null, null, null);
 				break;
 			case 3:			//utilizado pela funcionalidade DeadFiles e default
-				c = db.query(tabela, null, "morto=? AND id BETWEEN ? AND ? LIMIT 5", args, null, null, null);
-				break;
+				c = db.query(tabela, null, "id BETWEEN ? AND ? LIMIT 5", args, null, null, null);
+				break;				
 			case 4:
-				c = db.query(tabela, null, "morto=? LIMIT 5", args, null, null, null);
+				c = db.query(tabela, null, "LIMIT 5", null, null, null, null);
 				break;
 			case 5:
-				//c = db.query(tabela, null, "morto=? AND id BETWEEN ? AND ? ORDER BY id DESC LIMIT 5", args, null, null, null);
-				c = db.rawQuery("SELECT * FROM (SELECT * FROM ideias WHERE morto =? AND id BETWEEN ? AND ? ORDER BY id DESC LIMIT 5) ORDER BY id ASC", args);
+				c = db.rawQuery("SELECT * FROM (SELECT * FROM ideias WHERE id BETWEEN ? AND ? ORDER BY id DESC LIMIT 5) ORDER BY id ASC", args);
 				break;
-			case 6:
-				//c = db.query(tabela, null, "tag=? AND id BETWEEN ? AND ? ORDER BY id DESC LIMIT 5", args, null, null, null);
+			case 6:			//utilizado pela funcionalidade de movimento reverso
 				c = db.rawQuery("SELECT * FROM (SELECT * FROM ideias WHERE tag=? AND id BETWEEN ? AND ? ORDER BY id DESC LIMIT 5) ORDER BY id ASC", args);
 				break;
 			}

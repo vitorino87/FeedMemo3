@@ -69,11 +69,11 @@ public class MainView2 extends Activity {
 				mc = new ControladorDoDB(context);// instancia um MainControl com o contexto atual
 				mc.abrirConexao();// abre a conexão com o banco
 				String ideia = txtIdeia.getText().toString();// adiciona o texto adicionado pelo usuário na variável ideia				
-				ideia = ideia.replace(",", "\u0375");
+				//ideia = ideia.replace(",", "\u0375");
 				FormatadorDeTexto ft = new FormatadorDeTexto();
 				ideia = ft.formatInputText(ideia);
 				if (!ideia.equals("")) { // se ideia não for ""
-					Long l = mc.inserirRow(ideia,"n", TABELA,0); // insere no DB a string ideia na tabela memoria
+					Long l = mc.inserirRow(ideia, TABELA,0); // insere no DB a string ideia na tabela memoria
 					if (l > -1) { // se o método anterior retornar um valor maior que -1
 						Toast.makeText(context, "Ideia Salva!", Toast.LENGTH_SHORT).show();
 					} else {
@@ -91,7 +91,7 @@ public class MainView2 extends Activity {
 				mc = new ControladorDoDB(context);// instancia um MainControl com o contexto atual
 				mc.abrirConexao();// abre a conexão com o banco
 				String ideia = txtIdeia.getText().toString();// adiciona o texto adicionado pelo usuário na variável ideia
-				ideia = ideia.replace(",", "\u0375");
+				//ideia = ideia.replace(",", "\u0375");
 				FormatadorDeTexto ft = new FormatadorDeTexto();
 				ideia = ft.formatInputText(ideia);
 				if (!ideia.equals("")) { // se ideia não for ""
@@ -118,6 +118,7 @@ public class MainView2 extends Activity {
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) { //método invocando ao retornar uma intent
+		try{
 		Context context = this.getApplicationContext();
 		mc = new ControladorDoDB(context);// instancia um MainControl com o contexto atual
 		mc.abrirConexao();
@@ -141,28 +142,9 @@ public class MainView2 extends Activity {
 			Iterator<String> iterator = lista.iterator();	
 			while(iterator.hasNext()){
 				String valores = iterator.next();				
-				ArrayList<String> valor = new ArrayList<String>();//variavel para armazenar os valores								
-				int a = 0;//variavel para realizar a contagem da string atual
-				int cont = 1;
-				while(!valores.isEmpty()){ //irá iterar até ser empty					
-					if(valores.charAt(a)==','){
-						String ideia = valores.substring(0, a);	
-						if(ideia.charAt(0)==34 && ideia.charAt(a-1)==34)//checando se há aspas no inicio e fim da ideia
-							ideia = ideia.substring(1, a-1); //removendo as aspas
-						if(ideia.contains(","))
-							ideia = ideia.replace(",", "\u0375");																		
-						valor.add(ideia);//inserindo a palavra																																																																		
-						valores = valores.substring(++a);//reduz a variavel valores e pula virgula													
-						a=0;//zerando a contagem
-						cont++;
-						if(cont==3){
-							valor.add(valores);
-							valores="";
-						}
-					}
-					a++;						
-				}							
-				Long l = mc.inserirRow(valor.get(0), valor.get(1), TABELA, Integer.valueOf(valor.get(2)));
+				ArrayList<String> valor = new ArrayList<String>();//variavel para armazenar os valores												
+				int len = valores.length();
+				Long l = mc.inserirRow(valores.substring(1, len-3), TABELA, Integer.valueOf(valores.substring(len-1, len)));
 				if(l==-1){
 					verifica=false;
 					listaDeErros.add(valor);
@@ -175,6 +157,9 @@ public class MainView2 extends Activity {
 			break;
 		}					
 		exportarOuImportar = 0;
+		}catch(Exception ex){
+			Toast.makeText(this, "Error: "+ex.toString(), Toast.LENGTH_SHORT).show();
+		}
 	}	
 	
 	public void setPixelAnterior(int pixel){ //métodos para trabalhar com o tamanho do texto 
