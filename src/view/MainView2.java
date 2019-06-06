@@ -144,23 +144,20 @@ public class MainView2 extends Activity {
 		case 2:
 			ImportadorPreliminar i = new ImportadorPreliminar(MainView2.this);
 			boolean verifica=true;
-			ArrayList<Object> listaDeErros = new ArrayList<Object>();//serve para listar os itens que falharam
 			ArrayList<String> lista = i.importar(requestCode, resultCode, data); 
 			Iterator<String> iterator = lista.iterator();	
 			while(iterator.hasNext()){
-				String valores = iterator.next();				
-				ArrayList<String> valor = new ArrayList<String>();//variavel para armazenar os valores												
+				String valores = iterator.next();																				
 				int len = valores.length();
 				Long l = mc.inserirRow(valores.substring(1, len-3), TABELA, Integer.valueOf(valores.substring(len-1, len)));
-				if(l==-1){
+				if (l<0L){
 					verifica=false;
-					listaDeErros.add(valor);
-				}
+				}				
 			}
 			if(verifica)
 				Toast.makeText(this, "Importado com Sucesso!", Toast.LENGTH_LONG).show();
 			else
-				Toast.makeText(this, "Erro! Itens não importados: "+listaDeErros, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Alguns itens não foram importados!", Toast.LENGTH_LONG).show();
 			break;
 		}					
 		exportarOuImportar = 0;
