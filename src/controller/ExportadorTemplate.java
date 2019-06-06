@@ -18,7 +18,7 @@ public class ExportadorTemplate {
 	
 	Activity ac;
 	final String TIPOMIME="text/csv";   //esse é o tipo MIME que será exportado
-	final String NOMEDOPROGRAMA="FeedMemo";
+	final String NOMEDOPROGRAMA="FeedMemo3";
 	
 	
 	public ExportadorTemplate(Activity ac){ //no construtor desta classe estou adicionando a Activity que a chamou
@@ -61,7 +61,8 @@ public class ExportadorTemplate {
 																		//OutputStream é super classe da FileOutputStream 
 						try {
 							Writer fw2 = new OutputStreamWriter(fos, StandardCharsets.UTF_8); //Gerando um OutputStreamWriter, UTF-8
-							fw2.write(info); //gravando a informação no arquivo
+							fw2.append(info);
+							//fw2.write(info); //gravando a informação no arquivo
 							fw2.close(); 	 //fechando o writer
 							sucess = true;
 						} catch (IOException e) {

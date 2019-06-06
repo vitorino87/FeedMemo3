@@ -89,7 +89,6 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	 */
 	public static void loadIdeias(){
 		try{
-			mc.setMorto("n");
 			mc.setMinId(mc.getIdMinDB());
 			mc.setMaxId(mc.getMinId()+5);
 			mc.setTipoDeQuery(3);
@@ -146,7 +145,7 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 		String a = null;
 		try {
 			a = new String(b.getBytes("UTF8"), StandardCharsets.UTF_8);
-			a = a.replace("\u0375", ",");
+			//a = a.replace("\u0375", ",");
 			controller.FormatadorDeTexto ft = new controller.FormatadorDeTexto();
 			a = ft.formatOutputText(a);
 		} catch (UnsupportedEncodingException e) {e.printStackTrace();}	
@@ -267,7 +266,6 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 				gd.guardarEstado("maxId", mc.getCurrentIdMax(), this);
 				gd.guardarEstado("currentId", mc.getCurrentId(), this);
 				gd.guardarEstado("tag", JanelaDeTags.tagCarregada, this);
-				gd.guardarEstado("morto", mc.getMorto(), this);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -300,7 +298,7 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			mc.setMinId(gd.restaurarEstado("minId", this));
 			mc.setTipoDeQuery(gd.restaurarEstado("tipoSql", this));	
 			mc.setTag(gd.restaurarEstado("tag", this));
-			mc.setMorto(gd.restaurarEstado2("morto", this));						
+//			mc.setMorto(gd.restaurarEstado2("morto", this));						
 			if(mc.getTipoDeQuery()==2 && mc.getMaxId()!=-1 && mc.getMinId()!=-1 || mc.getTipoDeQuery()==3
 					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){	
 				mc.retornarTodosResultados(TABELA);
@@ -394,7 +392,7 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 				if (mc.getMinId() < 0)
 					mc.setMinId(0);
 				mc.setMaxId(a + 2);
-				mc.setMorto("n");
+//				mc.setMorto("n");
 				mc.setTipoDeQuery(3);
 				mc.retornarTodosResultados(TABELA);
 				MainView.carregarIdeia(a);
@@ -430,7 +428,6 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 						JanelaDeTags.checarMenu = false;
 						MenuDoMainView mmv = new MenuDoMainView(MainView.this, menu);
 						mmv.chamarMenuInicial(R.menu.menu);
-						mc.setMorto("n");
 						mc.setTipoDeQuery(4);
 						mc.retornarTodosResultados(TABELA);
 						Toast.makeText(MainView.this, "Retornou porque não há mais tag " + JanelaDeTags.tagCarregada,

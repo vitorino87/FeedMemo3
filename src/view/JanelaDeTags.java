@@ -186,7 +186,6 @@ public class JanelaDeTags {
 										if (mc.getMinId() < 0)
 											mc.setMinId(0);
 										mc.setMaxId(a + 2);
-										mc.setMorto("n");
 										mc.setTipoDeQuery(3);
 										mc.retornarTodosResultados(tabela);
 										MainView.carregarIdeia(a);
@@ -221,7 +220,6 @@ public class JanelaDeTags {
 												menu.clear();
 												checarMenu = false;
 												mmv.chamarMenuInicial(R.menu.menu);
-												mc.setMorto("n");
 												mc.setTipoDeQuery(4);
 												mc.retornarTodosResultados(tabela);
 												Toast.makeText(ac, "Retornou porque não há mais tag " + tagCarregada,
@@ -272,7 +270,6 @@ public class JanelaDeTags {
 									if (mc.getMinId() < 0)
 										mc.setMinId(0);
 									mc.setMaxId(a + 2);
-									mc.setMorto("n");
 									mc.setTipoDeQuery(3);
 									mc.retornarTodosResultados(tabela);
 									MainView.carregarIdeia(a); // utilizando a

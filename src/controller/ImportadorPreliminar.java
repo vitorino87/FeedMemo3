@@ -24,7 +24,7 @@ import android.util.Log;
  */
 public class ImportadorPreliminar {
 	private static final String TIPOMIME = "text/csv";
-	private static final String NOMEDOPROGRAMA = "FeedMemo";
+	private static final String NOMEDOPROGRAMA = "FeedMemo3";
 	Activity ac;
 	
 	public ImportadorPreliminar(Activity ac){
@@ -40,6 +40,7 @@ public class ImportadorPreliminar {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.setType(TIPOMIME);
+		intent.setType("plain/text");
 		ac.startActivityForResult(intent, 1);
 		return 2;
 	}
@@ -67,9 +68,11 @@ public class ImportadorPreliminar {
 					int ch;
 					String text = "";
 					while((ch = rd.read())!=-1){ 
-						if(ch != 10 && ch != 13){ //se char não é enter
+						//if(ch != 10 && ch != 13){ //se char não é enter
+						if(ch!=10){
 							//if(ch!=34) //se char não é "
-							text+=String.valueOf((char)ch);						
+							if(ch!=13)
+								text+=String.valueOf((char)ch);						
 						}else{
 							lista.add(text); //adiciona na lista
 							text=""; //limpa variavel

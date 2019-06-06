@@ -13,7 +13,7 @@ public class ControladorDoDB {
 	Cursor cursor;
 	Boolean previous=false;
 	int tipoDeQuery = 0;	
-	String morto;
+//	String morto;
 	int minId, maxId;
 	int tag;
 	int tagChangeTag;
@@ -51,13 +51,13 @@ public class ControladorDoDB {
 		this.maxId = maxId;
 	}
 
-	public String getMorto() {
-		return morto;
-	}
-
-	public void setMorto(String morto) {
-		this.morto = morto;
-	}
+//	public String getMorto() {
+//		return morto;
+//	}
+//
+//	public void setMorto(String morto) {
+//		this.morto = morto;
+//	}
 
 	public int getTipoDeQuery() {
 		return tipoDeQuery;
@@ -68,7 +68,7 @@ public class ControladorDoDB {
 	}
 
 	public ControladorDoDB(Context context){
-		banco = new Banco(context, "Memoria");
+		banco = new Banco(context, "FeedMemo3");
 		abrirConexao();
 	}
 	
@@ -122,26 +122,25 @@ public class ControladorDoDB {
 		try{
 		//while(checar && banco.getMaxId(db)>=maxId){
 			switch(tipoDeQuery){
-			case 1:
+			case 1: //busca do export
 				cursor = banco.retornarTodosResultados(db, tabela,1, null);
 				break;
-			case 2:
+			case 2: //busca por tag
 				String[] info = {String.valueOf(tag), String.valueOf(minId), String.valueOf(maxId)};
 				cursor = banco.retornarTodosResultados(db, tabela, 2, info);				
 				break;
-			case 3:
-				String[] info2 = {morto, String.valueOf(minId), String.valueOf(maxId)};
+			case 3: //busca normal
+				String[] info2 = {String.valueOf(minId), String.valueOf(maxId)};
 				cursor = banco.retornarTodosResultados(db, tabela, 3, info2);
 				break;
-			case 4:
-				String[] info3 = {morto};
-				cursor = banco.retornarTodosResultados(db, tabela, 4 , info3);
+			case 4:				
+				cursor = banco.retornarTodosResultados(db, tabela, 4 , null);
 				break;
 			case 5:
-				String[] info4 = {morto, String.valueOf(minId), String.valueOf(maxId)};
+				String[] info4 = {String.valueOf(minId), String.valueOf(maxId)};
 				cursor = banco.retornarTodosResultados(db, tabela, 5, info4);
 				break;
-			case 6:
+			case 6: //busca para movimento inverso
 				String[] info5 = {String.valueOf(tag), String.valueOf(minId), String.valueOf(maxId)};
 				cursor = banco.retornarTodosResultados(db, tabela, 6, info5);
 				break;
@@ -162,7 +161,7 @@ public class ControladorDoDB {
 	public int getTagAtual(){
 		int b=-1;
 		try{
-			b = cursor.getInt(3);
+			b = cursor.getInt(2);
 		}catch(Exception e){
 			b=-1;
 		}						
@@ -283,11 +282,11 @@ public class ControladorDoDB {
 		return b;
 	}
 	
-	public Long inserirRow(Object ideia, Object morto, String tabela, int tag){
+	public Long inserirRow(Object ideia, String tabela, int tag){
 		Long a = -1L;
 		if(!((String)ideia).equals("")){
 			ContentValues cv = new ContentValues();
-			cv.put("morto", (String)morto);
+//			cv.put("morto", (String)morto);
 			cv.put("ideia", (String)ideia);
 			cv.put("tag", tag);
 			a = banco.inserir(db, cv, tabela);						
@@ -344,12 +343,12 @@ public class ControladorDoDB {
 		return a;
 	}
 	
-	public int addOrDelDeadFile(String tabela, String ideia, String dead){
-		ContentValues cv = new ContentValues();
-		cv.put("morto", dead);
-		int a = atualizarDB(cv, tabela, ideia);
-		return a;
-	}		
+//	public int addOrDelDeadFile(String tabela, String ideia, String dead){
+//		ContentValues cv = new ContentValues();
+//		cv.put("morto", dead);
+//		int a = atualizarDB(cv, tabela, ideia);
+//		return a;
+//	}		
 
 	public int getIdMinDB() {
 		abrirConexao();
