@@ -124,14 +124,21 @@ public class MainView2 extends Activity {
 		mc.abrirConexao();
 		switch(exportarOuImportar){
 		case 1:
-			ExportadorTemplate e = new ExportadorTemplate(MainView2.this); //instanciando o exportador
-			GeradorDeCSV geraCSV = new GeradorDeCSV();					
-			String csv = geraCSV.getCSV(mc, TABELA);
-			if(e.exportar(requestCode, resultCode, data, csv)){
+			GeradorDeCSV ger = new GeradorDeCSV();			
+			if(ger.salvar(mc, TABELA, MainView2.this, data)){
 				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
 			}else{
 				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
 			};//exportando
+			
+//			ExportadorTemplate e = new ExportadorTemplate(MainView2.this); //instanciando o exportador
+//			GeradorDeCSV geraCSV = new GeradorDeCSV();					
+//			String csv = geraCSV.getCSV(mc, TABELA);
+//			if(e.exportar(requestCode, resultCode, data, csv)){
+//				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
+//			}else{
+//				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
+//			};//exportando
 			
 			break;
 		case 2:

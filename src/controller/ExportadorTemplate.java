@@ -76,4 +76,61 @@ public class ExportadorTemplate {
 		}
 		return sucess;
 	}
+	
+	/**
+	 * Esse método realiza a preparação do export.
+	 * @param line: line to be save
+	 * @param data: carrega a informação de onde salvar
+	 * @return um Writer com o local storage alright set.
+	 */
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	public Writer prepararExport(Intent data){
+		Uri uri = null;
+		Writer fw2 = null;
+		if(data!=null){     //verificando se a intent é nula
+			uri = data.getData();  //adicionando os dados na URI
+			Log.i(NOMEDOPROGRAMA, "Uri: "+ uri.toString());	//imprimindo informação no log				
+		}
+		try {
+			OutputStream is = ac.getContentResolver().openOutputStream(uri); //capturando um outputstream do ContentResolver
+			FileOutputStream fos = (FileOutputStream) is;     //realizando cast para FileOutputStream - 
+			fw2 = new OutputStreamWriter(fos, StandardCharsets.UTF_8); //Gerando um OutputStreamWriter, UTF-8																
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		return fw2;
+	}
+	
+	/**
+	 * salva a linha
+	 * @param fw
+	 * @param line
+	 * @return
+	 */
+	public boolean salvar(Writer fw, String line){
+		boolean ret = false;
+		try{
+			fw.append(line);
+			ret = true;
+		}catch(Exception e){
+			Log.i(NOMEDOPROGRAMA, "Uri: "+ e.toString());
+		}
+		return ret;
+	}
+	
+	/**
+	 * fecha o writer
+	 * @param fw
+	 * @return
+	 */
+	public boolean close(Writer fw){
+		boolean ret = false;
+		try{
+			fw.close();
+			ret = true;
+		}catch(Exception e){
+			Log.i(NOMEDOPROGRAMA, "Uri: "+ e.toString());
+		}
+		return ret;
+	}
 }
