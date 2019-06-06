@@ -193,58 +193,6 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			}catch(Exception e){
 				
 			}
-			break;
-		case R.id.item2:
-			//a = mc.armazenarPositionDoCursor();
-			int idDb = mc.getCurrentId();
-			if(mc.addOrDelDeadFile(TABELA, ideia.getText().toString(),"s")!=-2){
-				Toast.makeText(context, "Adicionado ao arquivo morto", Toast.LENGTH_LONG).show();	
-				mc.setMorto("n");
-				mc.setMinId(idDb);
-				mc.setTipoDeQuery(3);
-				mc.setMaxId(mc.getMinId()+5);
-				mc.retornarTodosResultados(TABELA);
-				if(mc.getCursor().getCount()<=0){
-					mc.setMinId(mc.getIdMinDB());
-					mc.setMaxId(idDb);
-					mc.retornarTodosResultados(TABELA);
-				}
-				carregarFirst();
-			}else{
-				Toast.makeText(context, "Não foi possível adicionar ao arquivo morto", Toast.LENGTH_LONG).show();
-			}
-			break;
-		case R.id.item3:
-			int tipoQuery = mc.getTipoDeQuery();	
-			int idCurrent = mc.getCurrentId();
-			int tagAtual = mc.getTagAtual();
-			mc.setTipoDeQuery(3);
-			mc.setMorto("s");
-			mc.retornarTodosResultados(TABELA);
-			if(mc.getCursor().getCount()<=0){
-				Toast.makeText(context, "Não há Dead Files", Toast.LENGTH_LONG).show();
-				if(tipoQuery==2){
-					mc.setTipoDeQuery(2);
-					mc.setTag(tagAtual);
-					mc.setMinId(idCurrent-2);
-					mc.setMaxId(idCurrent+2);
-					mc.retornarTodosResultados(TABELA);
-					carregarIdeia(idCurrent);
-				}else if(tipoQuery==3){
-					mc.setTipoDeQuery(3);
-					mc.setMorto("n");
-					mc.setMinId(idCurrent-2);
-					mc.setMaxId(idCurrent+2);
-					mc.retornarTodosResultados(TABELA);
-					carregarIdeia(idCurrent);
-				}
-			}else{								
-				Toast.makeText(context, "Dead Files", Toast.LENGTH_LONG).show();				
-				menu.clear();
-				MenuDoMainView mmv = new MenuDoMainView(MainView.this, menu);	   
-			    mmv.chamarMenuInicial(R.menu.menu2);
-			    carregarFirst();
-			}
 			break;		
 		case R.id.item4:			
 			if (item.isChecked()) item.setChecked(false);
@@ -254,38 +202,7 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 				ideia.setText(ideia.getText().toString().toUpperCase());
 			else
 				ideia.setText(bkp);
-			break;
-		case R.id.item5:
-			a = mc.getCurrentId();
-			if(mc.addOrDelDeadFile(TABELA, ideia.getText().toString(), "n")!=2){
-				Toast.makeText(context, "Removido do arquivo morto", Toast.LENGTH_LONG).show();
-				mc.setMinId(a);
-				mc.setMaxId(mc.getIdMaxDB());
-				mc.setMorto("s");
-				mc.setTipoDeQuery(3);
-				mc.retornarTodosResultados(TABELA);
-				if(mc.getCursor().getCount()<=0){
-					mc.setMinId(mc.getIdMinDB());
-					mc.setMaxId(a);
-					mc.retornarTodosResultados(TABELA);
-					if(mc.getCursor().getCount()<=0){
-						menu.clear();
-						MenuDoMainView mmv = new MenuDoMainView(MainView.this, menu);	   
-					    mmv.chamarMenuInicial(R.menu.menu);
-						Toast.makeText(context, "Não há Dead Files, por isso Retornou", Toast.LENGTH_LONG).show();
-						mc.setMorto("n");
-						mc.retornarTodosResultados(TABELA);						
-					}
-				}
-				carregarFirst();								
-			}else{
-				Toast.makeText(context, "Não foi possível remover do arquivo morto", Toast.LENGTH_LONG).show();
-			}
-			break;
-		case R.id.item6:
-			retornar();
-			break;
-			
+			break;			
 		case R.id.item7:
 			if(item.isChecked())
 				item.setChecked(false);
@@ -425,19 +342,11 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	    			mmv.chamarMenuInicial(R.menu.menu);
 	    			mmv.chamarMenuInicial(R.menu.menutags);
 	    			menu.removeItem(R.id.item8);
-	    			menu.removeItem(R.id.item2);
 	    			JanelaDeTags.checarMenu = true;
 	    		}else{
 	    			mmv.chamarMenuInicial(R.menu.menu);
 	    		}
-	    		break;
-	    	case 3:
-	    		if(mc.getTipoDeQuery()==3 && mc.getMorto().equals("s") && mc.getMaxId()!=-1 && mc.getMinId()!=-1){	    			   
-	    			mmv.chamarMenuInicial(R.menu.menu2);
-	    		}else{
-	    			mmv.chamarMenuInicial(R.menu.menu);
-	    		}
-	    		break;	    		    		
+	    		break;    		    		
 	    	default:
 	    		mmv.chamarMenuInicial(R.menu.menu);
 	    		break;

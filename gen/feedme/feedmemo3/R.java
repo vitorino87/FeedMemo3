@@ -31,17 +31,13 @@ public final class R {
         public static final int edtAlterar=0x7f070000;
         public static final int ideia=0x7f070014;
         public static final int item1=0x7f070017;
-        public static final int item2=0x7f070018;
-        public static final int item3=0x7f070019;
-        public static final int item4=0x7f07001a;
-        public static final int item5=0x7f07001f;
-        public static final int item6=0x7f070020;
-        public static final int item7=0x7f07001b;
-        public static final int item8=0x7f07001c;
-        public static final int itemAtualizar=0x7f07001e;
-        public static final int itemChangeTag=0x7f070021;
-        public static final int itemTagRetornar=0x7f070022;
-        public static final int itemVisualizarItensTag=0x7f07001d;
+        public static final int item4=0x7f070018;
+        public static final int item7=0x7f070019;
+        public static final int item8=0x7f07001a;
+        public static final int itemAtualizar=0x7f07001c;
+        public static final int itemChangeTag=0x7f07001d;
+        public static final int itemTagRetornar=0x7f07001e;
+        public static final int itemVisualizarItensTag=0x7f07001b;
         public static final int linearLayout=0x7f07000f;
         public static final int tagMax=0x7f070011;
         public static final int textView1=0x7f070010;
@@ -55,8 +51,7 @@ public final class R {
     }
     public static final class menu {
         public static final int menu=0x7f060000;
-        public static final int menu2=0x7f060001;
-        public static final int menutags=0x7f060002;
+        public static final int menutags=0x7f060001;
     }
     public static final class mipmap {
         public static final int ic_launcher=0x7f020000;

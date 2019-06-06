@@ -263,7 +263,6 @@ public class JanelaDeTags {
 									if (!checarMenu) {
 										mmv.chamarMenuInicial(R.menu.menutags);
 										menu.removeItem(R.id.item8);
-										menu.removeItem(R.id.item2);
 										checarMenu = true;
 									}
 									MainView.carregarFirst();
