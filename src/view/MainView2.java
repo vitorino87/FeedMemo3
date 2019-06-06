@@ -125,25 +125,12 @@ public class MainView2 extends Activity {
 		switch(exportarOuImportar){
 		case 1:
 			GeradorDeCSV ger = new GeradorDeCSV();			
-			if(ger.salvar(mc, TABELA, MainView2.this, data)){
+			if(ger.salvar(mc, TABELA, MainView2.this, data))
 				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
-			}else{
-				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
-			};//exportando
-			
-//			ExportadorTemplate e = new ExportadorTemplate(MainView2.this); //instanciando o exportador
-//			GeradorDeCSV geraCSV = new GeradorDeCSV();					
-//			String csv = geraCSV.getCSV(mc, TABELA);
-//			if(e.exportar(requestCode, resultCode, data, csv)){
-//				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
-//			}else{
-//				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
-//			};//exportando
-			
 			break;
 		case 2:
 			ImportadorPreliminar i = new ImportadorPreliminar(MainView2.this);
-			boolean verifica=true;
+			boolean verifica =true, verif =false;
 			ArrayList<String> lista = i.importar(requestCode, resultCode, data); 
 			Iterator<String> iterator = lista.iterator();	
 			while(iterator.hasNext()){
@@ -152,12 +139,14 @@ public class MainView2 extends Activity {
 				Long l = mc.inserirRow(valores.substring(1, len-3), TABELA, Integer.valueOf(valores.substring(len-1, len)));
 				if (l<0L){
 					verifica=false;
-				}				
+				}else 
+					verif=true;
 			}
-			if(verifica)
+			if(verifica && verif)
 				Toast.makeText(this, "Importado com Sucesso!", Toast.LENGTH_LONG).show();
 			else
-				Toast.makeText(this, "Alguns itens não foram importados!", Toast.LENGTH_LONG).show();
+				if(!verifica)
+					Toast.makeText(this, "Alguns itens não foram importados!", Toast.LENGTH_LONG).show();				
 			break;
 		}					
 		exportarOuImportar = 0;

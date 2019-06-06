@@ -70,7 +70,7 @@ public class GeradorDeCSV {
 			}
 			return true;
 		} catch (Exception e) {
-			Toast.makeText(ac, e.toString(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(ac, "Nada exportado! ("+e.toString()+")", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 	}
