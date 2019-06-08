@@ -150,8 +150,9 @@ public class MainView2 extends Activity {
 			while(iterator.hasNext()){
 				String valores = iterator.next();				
 				ArrayList<String> valor = new ArrayList<String>();//variavel para armazenar os valores												
-				int len = valores.length();
-				Long l = mc.inserirRow(valores.substring(1, len-3), TABELA, Integer.valueOf(valores.substring(len-1, len)));
+//				int len = valores.length();
+//				int ind = valores.lastIndexOf(",");
+				Long l = mc.inserirRow(valores.substring(1, valores.lastIndexOf(",")-1), TABELA, Integer.valueOf(valores.substring(valores.lastIndexOf(",")+1, valores.length())));
 				if(l==-1){
 					verifica=false;
 					listaDeErros.add(valor);

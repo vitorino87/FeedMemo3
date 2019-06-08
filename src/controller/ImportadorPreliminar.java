@@ -38,9 +38,12 @@ public class ImportadorPreliminar {
 	public int abrirArquivo(){
 		//Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		//Intent intent = new Intent(Intent.ACTION_PICK);		
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
-		intent.setType(TIPOMIME);
-		intent.setType("plain/text");
+		//intent.addCategory(Intent.CATEGORY_DEFAULT);
+		intent.setType("*/*");
+		//intent.setType(TIPOMIME);
+		//intent.setType("plain/text");
 		ac.startActivityForResult(intent, 1);
 		return 2;
 	}
@@ -85,4 +88,5 @@ public class ImportadorPreliminar {
 		}
 		return lista;
 	}	
+	
 }

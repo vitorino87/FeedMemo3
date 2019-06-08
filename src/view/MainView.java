@@ -297,8 +297,7 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			mc.setMaxId(gd.restaurarEstado("maxId", this));
 			mc.setMinId(gd.restaurarEstado("minId", this));
 			mc.setTipoDeQuery(gd.restaurarEstado("tipoSql", this));	
-			mc.setTag(gd.restaurarEstado("tag", this));
-//			mc.setMorto(gd.restaurarEstado2("morto", this));						
+			mc.setTag(gd.restaurarEstado("tag", this));						
 			if(mc.getTipoDeQuery()==2 && mc.getMaxId()!=-1 && mc.getMinId()!=-1 || mc.getTipoDeQuery()==3
 					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){	
 				mc.retornarTodosResultados(TABELA);
