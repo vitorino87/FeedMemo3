@@ -27,6 +27,7 @@ import android.widget.Toast;
 import controller.ControladorDoDB;
 import controller.GuardadorDeEstadosTemplate;
 
+@SuppressLint("ClickableViewAccessibility")
 public class MainView extends TelaTemplate implements OnTouchListener, OnGestureListener{	
 	protected static ControladorDoDB mc = null;		
 	static LinearLayout ll = null;		
@@ -176,13 +177,13 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	 * @author Tiago Vitorino
 	 * @since 16/02/2019 
 	 */
+	@SuppressLint("DefaultLocale")
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		jt = new JanelaDeTags(MainView.this, mc, TABELA, ideia.getText().toString(),menu);
 		ai = new AlteradorDeIdeia(MainView.this , mc , TABELA);
 		int id = item.getItemId();		
-		int a;
 		switch (id) {
 		case R.id.item1:		
 			try{
