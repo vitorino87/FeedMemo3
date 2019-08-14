@@ -86,12 +86,12 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	}	
 	
 	/**
-	 * Método inicial para carregar os resultados da tabela memoria do banco sem dead files
+	 * Método inicial para carregar os resultados da tabela memoria
 	 */
 	public static void loadIdeias(){
 		try{
-			mc.setMinId(mc.getIdMinDB());
-			mc.setMaxId(mc.getMinId()+5);
+			mc.setMinId(mc.getIdMinDB()); //set o id min do DB p/ garantir q algo será retornado
+			mc.setMaxId(mc.getMinId()+5); 
 			mc.setTipoDeQuery(3);
 			mc.retornarTodosResultados(TABELA);
 		}catch(Exception e){
@@ -261,12 +261,12 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			GuardadorDeEstadosTemplate gd = new GuardadorDeEstadosTemplate();
 			if(mc.getTipoDeQuery()==4 || mc.getTipoDeQuery()==-1)
 				gd.guardarEstado("tipoSql", 3, this);
-			else
+			else		
 				gd.guardarEstado("tipoSql", mc.getTipoDeQuery(), this);
 				gd.guardarEstado("minId", mc.getCurrentIdMin(), this);
 				gd.guardarEstado("maxId", mc.getCurrentIdMax(), this);
 				gd.guardarEstado("currentId", mc.getCurrentId(), this);
-				gd.guardarEstado("tag", JanelaDeTags.tagCarregada, this);
+				gd.guardarEstado("tag", mc.getTag(), this);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -300,22 +300,25 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			mc.setTipoDeQuery(gd.restaurarEstado("tipoSql", this));	
 			mc.setTag(gd.restaurarEstado("tag", this));						
 			if(mc.getTipoDeQuery()==2 && mc.getMaxId()!=-1 && mc.getMinId()!=-1 || mc.getTipoDeQuery()==3
-					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){	
+					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){
+				if(mc.getTag()==0){
+					mc.setTipoDeQuery(3);
+				}
 				mc.retornarTodosResultados(TABELA);
-				mc.nextResult();
+				//mc.nextResult(); //pra q serve?				
 				if(menu!=null)
 					onCreateOptionsMenu(menu);
 				if(a==-1){
-					mc.getCursor().moveToFirst();
+					//mc.getCursor().moveToFirst(); //já tem esse trecho no initialResult
 					mc.initialResult();
 				}else{
 					carregarIdeia(a);
 				}									
-			}else{
+			}else{ //se tudo deu errado anterior, carrega do zero
 				loadIdeias();
 				carregarFirst();
 			}
-		}catch(Exception ex){
+		}catch(Exception ex){//se deu exception, carrega do zero
 			loadIdeias();
 			carregarFirst();
 		}		
