@@ -35,8 +35,9 @@ public final class R {
         public static final int item7=0x7f070019;
         public static final int item8=0x7f07001a;
         public static final int itemAtualizar=0x7f07001c;
-        public static final int itemChangeTag=0x7f07001d;
-        public static final int itemTagRetornar=0x7f07001e;
+        public static final int itemChangeTag=0x7f07001e;
+        public static final int itemDeletar=0x7f07001d;
+        public static final int itemTagRetornar=0x7f07001f;
         public static final int itemVisualizarItensTag=0x7f07001b;
         public static final int linearLayout=0x7f07000f;
         public static final int tagMax=0x7f070011;

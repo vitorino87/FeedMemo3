@@ -66,8 +66,8 @@ public class JanelaDeTags {
 	 * @return
 	 */
 	public Dialog onCreateDialog(final int choose) {		
-		if (ideia.contains(","))
-			ideia = ideia.replace(",", "\u0375");
+//		if (ideia.contains(","))
+//			ideia = ideia.replace(",", "\u0375");
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(ac);
 		// Get the layout inflater
@@ -255,6 +255,15 @@ public class JanelaDeTags {
 								mc.setTipoDeQuery(2);
 								mc.setMaxId(mc.getIdMaxDB());
 								mc.setMinId(0);
+								carregarTemp:{ //esse trecho faz parte da funcionalidade que faz o app carregar a ideia do último acesso à tag
+									controller.GuardadorDeEstadosTemplate gd = new controller.GuardadorDeEstadosTemplate();
+									int b = gd.restaurarEstado("temp"+mc.getTag(), ac);
+									if(b!=-1){
+										mc.setMinId(b);
+										mc.setMaxId(b+5);
+									}
+									break carregarTemp;
+								}
 								mc.retornarTodosResultados(tabela);
 								if (mc.initialResult() != "") {
 									Toast.makeText(ac, "Carregada tag " + tagCarregada, Toast.LENGTH_LONG).show();
