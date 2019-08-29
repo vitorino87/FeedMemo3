@@ -260,7 +260,7 @@ public class JanelaDeTags {
 									int b = gd.restaurarEstado("temp"+mc.getTag(), ac);
 									if(b!=-1){
 										mc.setMinId(b);
-										mc.setMaxId(b+5);
+										mc.setMaxId(mc.getIdMaxDB());
 									}
 									break carregarTemp;
 								}
