@@ -27,6 +27,7 @@ import android.widget.Toast;
 import controller.ControladorDoDB;
 import controller.GuardadorDeEstadosTemplate;
 
+@SuppressLint("ClickableViewAccessibility")
 public class MainView extends TelaTemplate implements OnTouchListener, OnGestureListener{	
 	protected static ControladorDoDB mc = null;		
 	static LinearLayout ll = null;		
@@ -85,12 +86,12 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	}	
 	
 	/**
-	 * Método inicial para carregar os resultados da tabela memoria do banco sem dead files
+	 * Método inicial para carregar os resultados da tabela memoria
 	 */
 	public static void loadIdeias(){
 		try{
-			mc.setMinId(mc.getIdMinDB());
-			mc.setMaxId(mc.getMinId()+5);
+			mc.setMinId(mc.getIdMinDB()); //set o id min do DB p/ garantir q algo será retornado
+			mc.setMaxId(mc.getMinId()+5); 
 			mc.setTipoDeQuery(3);
 			mc.retornarTodosResultados(TABELA);
 		}catch(Exception e){
@@ -176,13 +177,13 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 	 * @author Tiago Vitorino
 	 * @since 16/02/2019 
 	 */
+	@SuppressLint("DefaultLocale")
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		jt = new JanelaDeTags(MainView.this, mc, TABELA, ideia.getText().toString(),menu);
 		ai = new AlteradorDeIdeia(MainView.this , mc , TABELA);
 		int id = item.getItemId();		
-		int a;
 		switch (id) {
 		case R.id.item1:		
 			try{
@@ -214,6 +215,11 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			JanelaDeTags.setChooseTela(0);
 			break;			
 		case R.id.itemVisualizarItensTag:
+			carregarTemp:{ //esse trecho faz parte da funcionalidade que faz o app carregar a ideia do último acesso
+				GuardadorDeEstadosTemplate gd = new GuardadorDeEstadosTemplate();
+				gd.guardarEstado("temp"+mc.getTag(), mc.getCurrentId(), this);
+				break carregarTemp;
+			}
 			jt.onCreateDialog(2).show();
 			JanelaDeTags.setChooseTela(2);
 			break;			
@@ -230,6 +236,11 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			ai.setText(ideia.getText().toString());
 			ai.onCreateDialog().show();
 			break;
+			
+		case R.id.itemDeletar:
+			ConfirmadorDeDel cd = new ConfirmadorDeDel(this, mc,TABELA,ideia.getText().toString());
+			cd.onCreateDialog().show();			
+			break;		
 		}		
 		return super.onOptionsItemSelected(item);
 	}
@@ -260,12 +271,16 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			GuardadorDeEstadosTemplate gd = new GuardadorDeEstadosTemplate();
 			if(mc.getTipoDeQuery()==4 || mc.getTipoDeQuery()==-1)
 				gd.guardarEstado("tipoSql", 3, this);
-			else
+			else		
 				gd.guardarEstado("tipoSql", mc.getTipoDeQuery(), this);
 				gd.guardarEstado("minId", mc.getCurrentIdMin(), this);
 				gd.guardarEstado("maxId", mc.getCurrentIdMax(), this);
 				gd.guardarEstado("currentId", mc.getCurrentId(), this);
-				gd.guardarEstado("tag", JanelaDeTags.tagCarregada, this);
+				gd.guardarEstado("tag", mc.getTag(), this);
+				carregarTemp:{ //esse trecho faz parte da funcionalidade que faz o app carregar a ideia do último acesso
+					gd.guardarEstado("temp"+mc.getTag(), mc.getCurrentId(), this); //serve para guardar a posição de cada tag
+					break carregarTemp;
+				}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -299,22 +314,33 @@ public class MainView extends TelaTemplate implements OnTouchListener, OnGesture
 			mc.setTipoDeQuery(gd.restaurarEstado("tipoSql", this));	
 			mc.setTag(gd.restaurarEstado("tag", this));						
 			if(mc.getTipoDeQuery()==2 && mc.getMaxId()!=-1 && mc.getMinId()!=-1 || mc.getTipoDeQuery()==3
-					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){	
+					&& mc.getMaxId()!=-1 && mc.getMinId()!=-1){
+//				if(mc.getTag()==0){
+//					mc.setTipoDeQuery(3);
+//				}
+				carregarTemp:{ //esse trecho faz parte da funcionalidade que faz o app carregar a ideia do último acesso
+					if(mc.getTipoDeQuery()!=3 && gd.restaurarEstado("temp"+mc.getTag(), this)!=-1){     //este trecho serve para recuperar a posição dessa última tag
+						a = gd.restaurarEstado("temp"+mc.getTag(), this); 
+						mc.setMinId(a);
+						mc.setMaxId(a+5);
+					}
+					break carregarTemp;
+				}
 				mc.retornarTodosResultados(TABELA);
-				mc.nextResult();
+				//mc.nextResult(); //pra q serve?				
 				if(menu!=null)
 					onCreateOptionsMenu(menu);
 				if(a==-1){
-					mc.getCursor().moveToFirst();
+					//mc.getCursor().moveToFirst(); //já tem esse trecho no initialResult
 					mc.initialResult();
 				}else{
 					carregarIdeia(a);
 				}									
-			}else{
+			}else{ //se tudo deu errado anterior, carrega do zero
 				loadIdeias();
 				carregarFirst();
 			}
-		}catch(Exception ex){
+		}catch(Exception ex){//se deu exception, carrega do zero
 			loadIdeias();
 			carregarFirst();
 		}		

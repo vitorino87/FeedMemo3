@@ -40,7 +40,6 @@ public class FormatadorDeTexto implements TextWatcher {
 	}
 	
 	public String formatInputText(String text){
-		char c = 13;
 		char d = 10;
 		if(text.contains(""+d))
 			text = text.replace(""+d, "\\\\n");

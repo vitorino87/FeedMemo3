@@ -56,18 +56,30 @@ public class GeradorDeCSV {
 			mc.retornarTodosResultados(TABELA);
 			Cursor cursor = mc.getCursor();
 			String line = "";
-			if (cursor.moveToFirst()) {
-				ExportadorTemplate et = new ExportadorTemplate(ac);
-				Writer wr = et.prepararExport(data);
-				line = "\"" + cursor.getString(1) + "\"" + "," + cursor.getInt(2) + ((char) 10);
-				et.salvar(wr, line);
-				do { // "ideia",tag(LF)
-					cursor.moveToNext();
+			boolean verifica=false, verif=false;
+			if(data!=null){
+		test1:{
+				if (cursor.moveToFirst()) {
+					ExportadorTemplate et = new ExportadorTemplate(ac);
+					Writer wr = et.prepararExport(data);
 					line = "\"" + cursor.getString(1) + "\"" + "," + cursor.getInt(2) + ((char) 10);
-					et.salvar(wr, line);
-				} while (!cursor.isLast());
-				et.close(wr);
+					verifica=et.salvar(wr, line);
+					do { // "ideia",tag(LF)
+						cursor.moveToNext();
+						line = "\"" + cursor.getString(1) + "\"" + "," + cursor.getInt(2) + ((char) 10);
+						et.salvar(wr, line);
+					} while (!cursor.isLast());					
+					et.close(wr);
+					verif=true;		
+					if(verifica==false)
+							break test1;																								
+				}
 			}
+			}
+			if(verifica && verif){
+				Toast.makeText(ac, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
+			}else if(verif && !verifica)
+				Toast.makeText(ac, "Não foi possível exportar", Toast.LENGTH_LONG).show();			
 			return true;
 		} catch (Exception e) {
 			Toast.makeText(ac, e.toString(), Toast.LENGTH_SHORT).show();

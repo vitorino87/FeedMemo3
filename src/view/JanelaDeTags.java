@@ -1,14 +1,13 @@
 package view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 import controller.ControladorDoDB;
 import feedme.feedmemo3.R;
 
+@SuppressLint("InflateParams")
 public class JanelaDeTags {
 
 	Activity ac;
@@ -66,8 +66,8 @@ public class JanelaDeTags {
 	 * @return
 	 */
 	public Dialog onCreateDialog(final int choose) {		
-		if (ideia.contains(","))
-			ideia = ideia.replace(",", "\u0375");
+//		if (ideia.contains(","))
+//			ideia = ideia.replace(",", "\u0375");
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(ac);
 		// Get the layout inflater
@@ -255,6 +255,15 @@ public class JanelaDeTags {
 								mc.setTipoDeQuery(2);
 								mc.setMaxId(mc.getIdMaxDB());
 								mc.setMinId(0);
+								carregarTemp:{ //esse trecho faz parte da funcionalidade que faz o app carregar a ideia do último acesso à tag
+									controller.GuardadorDeEstadosTemplate gd = new controller.GuardadorDeEstadosTemplate();
+									int b = gd.restaurarEstado("temp"+mc.getTag(), ac);
+									if(b!=-1){
+										mc.setMinId(b);
+										mc.setMaxId(mc.getIdMaxDB());
+									}
+									break carregarTemp;
+								}
 								mc.retornarTodosResultados(tabela);
 								if (mc.initialResult() != "") {
 									Toast.makeText(ac, "Carregada tag " + tagCarregada, Toast.LENGTH_LONG).show();

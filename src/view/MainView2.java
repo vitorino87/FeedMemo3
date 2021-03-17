@@ -1,7 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import feedme.feedmemo3.R;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -19,7 +17,7 @@ import controller.ControladorDoDB;
 import controller.ExportadorTemplate;
 import controller.FormatadorDeTexto;
 import controller.GeradorDeCSV;
-import controller.ImportadorPreliminar;
+import controller.Importador;
 
 @SuppressLint("NewApi")
 @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
@@ -49,7 +47,7 @@ public class MainView2 extends Activity {
 		btnImportar.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {				
-				ImportadorPreliminar it = new ImportadorPreliminar(MainView2.this);		
+				Importador it = new Importador(MainView2.this);		
 				exportarOuImportar = it.abrirArquivo();
 			}
 		});
@@ -125,43 +123,11 @@ public class MainView2 extends Activity {
 		switch(exportarOuImportar){
 		case 1:
 			GeradorDeCSV ger = new GeradorDeCSV();			
-			if(ger.salvar(mc, TABELA, MainView2.this, data)){
-				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
-			}else{
-				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
-			};//exportando
-			
-//			ExportadorTemplate e = new ExportadorTemplate(MainView2.this); //instanciando o exportador
-//			GeradorDeCSV geraCSV = new GeradorDeCSV();					
-//			String csv = geraCSV.getCSV(mc, TABELA);
-//			if(e.exportar(requestCode, resultCode, data, csv)){
-//				Toast.makeText(this, "Exportado com Sucesso!", Toast.LENGTH_LONG).show();
-//			}else{
-//				Toast.makeText(this, "Erro na exportação", Toast.LENGTH_LONG).show();
-//			};//exportando
-			
+			ger.salvar(mc, TABELA, MainView2.this, data);
 			break;
 		case 2:
-			ImportadorPreliminar i = new ImportadorPreliminar(MainView2.this);
-			boolean verifica=true;
-			ArrayList<Object> listaDeErros = new ArrayList<Object>();//serve para listar os itens que falharam
-			ArrayList<String> lista = i.importar(requestCode, resultCode, data); 
-			Iterator<String> iterator = lista.iterator();	
-			while(iterator.hasNext()){
-				String valores = iterator.next();				
-				ArrayList<String> valor = new ArrayList<String>();//variavel para armazenar os valores												
-//				int len = valores.length();
-//				int ind = valores.lastIndexOf(",");
-				Long l = mc.inserirRow(valores.substring(1, valores.lastIndexOf(",")-1), TABELA, Integer.valueOf(valores.substring(valores.lastIndexOf(",")+1, valores.length())));
-				if(l==-1){
-					verifica=false;
-					listaDeErros.add(valor);
-				}
-			}
-			if(verifica)
-				Toast.makeText(this, "Importado com Sucesso!", Toast.LENGTH_LONG).show();
-			else
-				Toast.makeText(this, "Erro! Itens não importados: "+listaDeErros, Toast.LENGTH_LONG).show();
+			Importador i = new Importador(MainView2.this);			
+			i.importar(data, mc, TABELA); 
 			break;
 		}					
 		exportarOuImportar = 0;
